@@ -1,61 +1,60 @@
-## Objectifs du système à modéliser
+## Objectifs du système à modéliser: 
+On propose de modéliser un système de pharmacie pour la vente de médicaments.
+Création et gestion des pharmacies
+Les pharmaciens peuvent inscrire leur pharmacie et gérer les informations principales (adresse, horaires,...).
+Mise à jour du stock des médicaments disponibles.
+Recherche de médicaments
+Les clients peuvent rechercher des médicaments par nom ou catégorie.
+Filtrer les résultats selon la ville et vérifier la disponibilité en temps réel.
+Vente de médicaments
+ Les clients peuvent acheter des médicaments en ligne ou réserver pour un retrait.
+ Validation des conditions d'achat (par exemple, ordonnance téléversée si nécessaire).
+Commande et livraison
+ Choix entre retrait en pharmacie ou livraison (si possible).
+ Suivi des commandes : en préparation, prête, livrée.
+Notifications
+ Alertes pour les clients (commande prête, statut de livraison).
+ Notifications pour les pharmaciens sur les nouvelles commandes,saturation de stock.
 
-On propose de modéliser un système de réservation (master) de tickets pouvant supporter plusieurs vendeurs (vendor). Le système master gère les salles, les concerts, les différents artistes se produisant dans les concerts et la réservation des tickets alors que les vendeurs assurent la vente de billets. Chaque vendeur a un quota pour un concert donné, qui peut évoluer avec le temps.
-En cas d'annulation de concert, le système de réservation informe les vendors qui doivent contacter les clients (customers). Le master propose des services de validation de l'authenticité des tickets à l'entrée des concerts.
+## Interfaces: 
+administrateurs -> Système : Créer/Mise à jour des infos pharmacie
+Système -> administrateurs : Confirmation (pharmacie créée/mise à jour)
 
-Lors de la réservation de ticket, on a 2 phases:
-- le booking (réservation des places)
-- le ticketing (émission de billets sécurisés avec clé.)
+administrateurs -> Système : Ajouter/Mise à jour stock médicaments
+Système -> administrateurs : Confirmation (stock mis à jour)
 
-Le vendor va demander au master via une API rest les concerts pour lesquels il possède un quota. Seuls ces concerts seront proposés à la vente au client.
-Le client spécifie ensuite le nombre de places assises et le nombre de places debout qu'il souhaite acheter. Le vendor interroge le master sur la disponibilité. Celui-ci va lui renvoyer des tickets transitionnels valables 10 minutes en cas de disponibilité de places.
-Le vendeur va ensuite renseigner les informations du client et les transmettre au master pour l'émission finale des tickets avec clé sécurisée qui sera transmise au client pour qu'il puisse entrer dans la salle.
-En cas d'annulation du concert, le master prévient les vendors (avec les informations des tickets à annuler et les emails des clients) le vendeur doit envoyer un email au client pour chaque ticket annulé.
+Client-> Système : Rechercher médicaments (nom, catégorie, ville)
+Système ->Client: Résultats (disponibilité, pharmacie)
 
-## Interfaces
+Client-> Système : Passer commande (liste médicaments, mode de livraison)
+Système -> Client: Confirmation commande (total, statut)
 
-```
-artist->master: POST venue
-vendor->master: GET Gigs
-master->vendor: Collection<Gigs>
+Client-> Système : Choisir livraison/retrait
+Système -> Client: Notification (statut commande)
 
-Customer->vendor: cli:gig selection
+Système -> Client: Alerte (commande prête, livraison en cours)
+Système -> administrateurs : Alerte (nouvelle commande, stock bas)
 
-vendor->master: jms:booking
-alt booking successfull
-    master->vendor: transitional tickets
-    vendor->Customer: ticket purshase ok
-    Customer->vendor: cli:customer informations
-    
-    vendor->master: jms:ticketing
-    master->vendor: tickets
 
-else booking unsuccessfull
-    master->vendor: no quota for gigs
-end
 
-opt venue cancellation
-    artist->master: DELETE venue
-    master->vendor: jms:topic:cancellation
-    vendor->Customer: smtp:cancellation email
-end
-```
-![](seqDiagram.png)
+## Schéma relationnel :
 
-## Schéma relationnel
 
-![](EER.png)
 
 ## Exigences fonctionnelles
+Le système DOIT permettre aux clients de rechercher des médicaments disponibles dans le stock.  
+Le système NE DOIT proposer que les médicaments pour lesquels le stock est supérieur à zéro.  
+Le système DOIT indiquer si un médicament nécessite une ordonnance avant l’achat.  
+Le système DOIT permettre aux clients de télécharger une ordonnance pour valider l’achat des médicaments concernés.  
+Le système DOIT permettre aux clients de créer un panier, de passer une commande, et de choisir un mode de livraison (retrait en pharmacie ou livraison à domicile).   
+Le système DOIT permettre aux administrateurs (un pharmacien) de consulter et de mettre à jour les niveaux de stock des médicaments.  
+Le système DOIT notifier les administrateurs lorsque le stock d’un médicament est critique.  
+Le système DOIT permettre d’annuler une commande en cours et informer les clients de cette annulation.  
 
-* le vendor NE DOIT proposer que les concerts pour lesquels il a un quota disponible, transmis par le master.
-* le vendor DOIT pouvoir effectuer les opérations de booking et ticketing
-* le master DOIT permettre à l'artiste d'annuler son concert.
-* le master DOIT informer le vendor en cas d'annulation de concert
-* le vendor DOIT informer les clients de l'annulation du concert par mail
-* le master DOIT proposer un service de validation de la clé du ticket, pour les contrôles aux entées.
+(à voir) checker si médicament dispo dans d’autres pharmacies aux alentours
 
 ## Exigences non fonctionnelles
 
-* le booking et le ticketing, bien qu'étant des opérations synchrones, DOIVENT être fiables et donc utiliser le messaging
-* Lors de l'annulation de tickets, le master DOIT informer tous les vendors de l'annulation, de façon fiable.
+Le système DOIT utiliser un messaging fiable pour garantir l’envoi des différentes notifications.   
+Le système DOIT utiliser des microservices pour permettre une maintenance et une extension flexibles.
+Le système Doit utiliser une gestion/architecture de base de données très robuste pour garantir une rapidité dans la lecture/traitement des données.
