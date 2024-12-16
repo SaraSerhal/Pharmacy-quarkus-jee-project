@@ -1,25 +1,29 @@
 ## Objectifs du système à modéliser: 
 On propose de modéliser un système de pharmacie pour la vente de médicaments.
 
-Création et gestion des pharmacies:
-Les pharmaciens peuvent inscrire leur pharmacie et gérer les informations principales (adresse, horaires,...).
-Mise à jour du stock des médicaments disponibles.
+* Création et gestion des pharmacies:
+ Les pharmaciens peuvent inscrire leur pharmacie et gérer les informations principales (adresse, horaires,...).
+ Mise à jour du stock des médicaments disponibles.
 
-Recherche de médicaments:
-Les clients peuvent rechercher des médicaments par nom ou catégorie.
-Filtrer les résultats selon la ville et vérifier la disponibilité en temps réel.
+* Recherche de médicaments:
+ Les clients peuvent rechercher des médicaments par nom ou catégorie.
+ Filtrer les résultats selon la ville et vérifier la disponibilité en temps réel.
 
-Vente de médicaments:
+* Vente de médicaments:
  Les clients peuvent acheter des médicaments en ligne ou réserver pour un retrait.
  Validation des conditions d'achat (par exemple, ordonnance téléversée si nécessaire).
  
-Commande et livraison:
+* Commande et livraison:
  Choix entre retrait en pharmacie ou livraison (si possible).
  Suivi des commandes : en préparation, prête, livrée.
  
-Notifications:
+* Notifications:
  Alertes pour les clients (commande prête, statut de livraison).
  Notifications pour les pharmaciens sur les nouvelles commandes,saturation de stock.
+
+* Service de gestion des ordonnances :
+ Validation des conditions d'achat pour les médicaments soumis à ordonnance.
+ Téléversement et vérification des ordonnances.
 
 ## Interfaces: 
 Administrateurs -> Service Pharmacie : Créer/Mise à jour des infos pharmacie
@@ -34,6 +38,11 @@ Service Recherche Médicaments -> Service Pharmacie : Obtenir pharmacies disponi
 Service Recherche Médicaments -> Client : Résultats (disponibilité, pharmacie)
 
 Client -> Service Commande : Passer commande (liste médicaments, mode de livraison)
+alt Ordonnance requise
+Client -> Service Gestion Ordonnance : Téléverser ordonnance
+Service Gestion Ordonnance -> Service Commande : Validation ordonnance
+Service Commande -> Client : Confirmation ordonnance validée
+end
 Service Commande -> Service Stock : Vérification et mise à jour du stock
 Service Commande -> Service Notifications : Alerte (nouvelle commande)
 Service Commande -> Client : Confirmation commande (total, statut)
@@ -46,10 +55,11 @@ Service Livraison -> Service Notifications : Alerte (commande prête, livraison 
 Service Notifications -> Client : Notification (commande prête ou en cours)
 Service Notifications -> Administrateurs : Alerte (nouvelle commande, stock bas)
 
+![DiagSequence.png](DiagSequence.png)
 
 
 ## Schéma relationnel :
-
+![ShemaRelationnel.png](SchemaRelationnel.png)
 
 
 ## Exigences fonctionnelles
@@ -61,8 +71,7 @@ Le système DOIT permettre aux clients de créer un panier, de passer une comman
 Le système DOIT permettre aux administrateurs (un pharmacien) de consulter et de mettre à jour les niveaux de stock des médicaments.  
 Le système DOIT notifier les administrateurs lorsque le stock d’un médicament est critique.  
 Le système DOIT permettre d’annuler une commande en cours et informer les clients de cette annulation.  
-
-(à voir) checker si médicament dispo dans d’autres pharmacies aux alentours
+Le système DOIT checker si médicament dispo dans d’autres pharmacies aux alentours
 
 ## Exigences non fonctionnelles
 
