@@ -1,5 +1,5 @@
 ## Objectifs du système à modéliser: 
-On propose de modéliser un système de pharmacie pour la vente de médicaments.
+On propose de modéliser des microservices pour un système de pharmacie pour la vente de médicaments.
 
 * Création et gestion des pharmacies:
  Les pharmaciens peuvent inscrire leur pharmacie et gérer les informations principales (adresse, horaires,...).
