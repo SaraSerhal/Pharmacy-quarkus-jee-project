@@ -44,27 +44,36 @@ Service Recherche Médicaments -> Client : Résultats (disponibilité, pharmacie
 
 Client -> Service Commande : Passer commande (liste médicaments, mode de livraison)
 alt Ordonnance requise
+
 Client -> Service Gestion Ordonnance : Téléverser ordonnance
+
 Service Gestion Ordonnance -> Service Commande : Validation ordonnance
+
 Service Commande -> Client : Confirmation ordonnance validée
 end
 Service Commande -> Service Stock : Vérification et mise à jour du stock
+
 Service Commande -> Service Notifications : Alerte (nouvelle commande)
+
 Service Commande -> Client : Confirmation commande (total, statut)
 
 Client -> Service Livraison : Choisir livraison/retrait
+
 Service Livraison -> Service Commande : Mise à jour du statut de commande (prête ou livraison en cours)
+
 Service Livraison -> Client : Notification (statut commande)
 
 Service Livraison -> Service Notifications : Alerte (commande prête, livraison en cours)
+
 Service Notifications -> Client : Notification (commande prête ou en cours)
+
 Service Notifications -> Administrateurs : Alerte (nouvelle commande, stock bas)
 
 ![DiagSequence.png](DiagSequence.png)
 
 
 ## Schéma relationnel :
-![ShemaRelationnel.png](SchemaRelationnel.png)
+![SchemaRelationnel.png](SchemaRelationnel.png)
 
 
 ## Exigences fonctionnelles
