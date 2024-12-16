@@ -1,23 +1,23 @@
 ## Objectifs du système à modéliser: 
 On propose de modéliser un système de pharmacie pour la vente de médicaments.
 
-Création et gestion des pharmacies
+Création et gestion des pharmacies:
 Les pharmaciens peuvent inscrire leur pharmacie et gérer les informations principales (adresse, horaires,...).
 Mise à jour du stock des médicaments disponibles.
 
-Recherche de médicaments
+Recherche de médicaments:
 Les clients peuvent rechercher des médicaments par nom ou catégorie.
 Filtrer les résultats selon la ville et vérifier la disponibilité en temps réel.
 
-Vente de médicaments
+Vente de médicaments:
  Les clients peuvent acheter des médicaments en ligne ou réserver pour un retrait.
  Validation des conditions d'achat (par exemple, ordonnance téléversée si nécessaire).
  
-Commande et livraison
+Commande et livraison:
  Choix entre retrait en pharmacie ou livraison (si possible).
  Suivi des commandes : en préparation, prête, livrée.
  
-Notifications
+Notifications:
  Alertes pour les clients (commande prête, statut de livraison).
  Notifications pour les pharmaciens sur les nouvelles commandes,saturation de stock.
 
