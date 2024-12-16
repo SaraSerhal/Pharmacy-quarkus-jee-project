@@ -22,23 +22,29 @@ Notifications:
  Notifications pour les pharmaciens sur les nouvelles commandes,saturation de stock.
 
 ## Interfaces: 
-administrateurs -> Système : Créer/Mise à jour des infos pharmacie
-Système -> administrateurs : Confirmation (pharmacie créée/mise à jour)
+Administrateurs -> Service Pharmacie : Créer/Mise à jour des infos pharmacie
+Service Pharmacie -> Administrateurs : Confirmation (pharmacie créée/mise à jour)
 
-administrateurs -> Système : Ajouter/Mise à jour stock médicaments
-Système -> administrateurs : Confirmation (stock mis à jour)
+Administrateurs -> Service Stock : Ajouter/Mise à jour stock médicaments
+Service Stock -> Service Notifications : Alerte (stock bas)
+Service Stock -> Administrateurs : Confirmation (stock mis à jour)
 
-Client-> Système : Rechercher médicaments (nom, catégorie, ville)
-Système ->Client: Résultats (disponibilité, pharmacie)
+Client -> Service Recherche Médicaments : Rechercher médicaments (nom, catégorie, ville)
+Service Recherche Médicaments -> Service Pharmacie : Obtenir pharmacies disponibles
+Service Recherche Médicaments -> Client : Résultats (disponibilité, pharmacie)
 
-Client-> Système : Passer commande (liste médicaments, mode de livraison)
-Système -> Client: Confirmation commande (total, statut)
+Client -> Service Commande : Passer commande (liste médicaments, mode de livraison)
+Service Commande -> Service Stock : Vérification et mise à jour du stock
+Service Commande -> Service Notifications : Alerte (nouvelle commande)
+Service Commande -> Client : Confirmation commande (total, statut)
 
-Client-> Système : Choisir livraison/retrait
-Système -> Client: Notification (statut commande)
+Client -> Service Livraison : Choisir livraison/retrait
+Service Livraison -> Service Commande : Mise à jour du statut de commande (prête ou livraison en cours)
+Service Livraison -> Client : Notification (statut commande)
 
-Système -> Client: Alerte (commande prête, livraison en cours)
-Système -> administrateurs : Alerte (nouvelle commande, stock bas)
+Service Livraison -> Service Notifications : Alerte (commande prête, livraison en cours)
+Service Notifications -> Client : Notification (commande prête ou en cours)
+Service Notifications -> Administrateurs : Alerte (nouvelle commande, stock bas)
 
 
 
