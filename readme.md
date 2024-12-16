@@ -27,14 +27,19 @@ On propose de modéliser un système de pharmacie pour la vente de médicaments.
 
 ## Interfaces: 
 Administrateurs -> Service Pharmacie : Créer/Mise à jour des infos pharmacie
+
 Service Pharmacie -> Administrateurs : Confirmation (pharmacie créée/mise à jour)
 
 Administrateurs -> Service Stock : Ajouter/Mise à jour stock médicaments
+
 Service Stock -> Service Notifications : Alerte (stock bas)
+
 Service Stock -> Administrateurs : Confirmation (stock mis à jour)
 
 Client -> Service Recherche Médicaments : Rechercher médicaments (nom, catégorie, ville)
+
 Service Recherche Médicaments -> Service Pharmacie : Obtenir pharmacies disponibles
+
 Service Recherche Médicaments -> Client : Résultats (disponibilité, pharmacie)
 
 Client -> Service Commande : Passer commande (liste médicaments, mode de livraison)
