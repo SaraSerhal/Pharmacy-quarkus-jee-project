@@ -2,15 +2,16 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>fr.pantheonsorbonne.ufr27.miage</groupId>
+  <groupId>fr.pantheonsorbonne</groupId>
   <artifactId>project-m1</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>project-m1</name>
   <modules>
-    <module>ticket-master</module>
-    <module>ticket-vendor</module>
-    <module>ticket-commons</module>
+    <module>user-service</module>
+    <module>pharmacy-service</module>
+    <module>stock-service</module>
+    <module>itinerary-service</module>
   </modules>
   <dependencyManagement>
     <dependencies>
