@@ -34,7 +34,8 @@ public class PharmacyService{
      */
     @Transactional
 
-    public List<PharmacyResponseDTO> processStockResponse(List<PharmacyResponseDTO> stockResponses) {
+    public List<PharmacyResponseDTO> processStockResponse(List<PharmacyResponseDTO> stockResponses,
+                                                          String userId, String userAddress) {
         return stockResponses.stream()
                 .filter(response -> !response.availableMedicaments().isEmpty()) // Filtrer les pharmacies sans médicaments
                 .map(response -> {
@@ -43,7 +44,10 @@ public class PharmacyService{
                             response.pharmacyId(),
                             response.availableMedicaments(),
                             pharmacy.getLocation(),
-                            pharmacy.getOpeningHours()
+                            pharmacy.getOpeningHours(),
+                            response.requestedMedicaments(),
+                            userId,
+                            userAddress
                     );
                 })
                 .collect(Collectors.toList());

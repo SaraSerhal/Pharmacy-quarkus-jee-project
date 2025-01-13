@@ -31,7 +31,7 @@ public class PharmacyStockService {
                                     medicamentDAO.getMedicamentQuantity(pharmacyId, m.getId()) > 0))
                     .collect(Collectors.toList());
 
-            responses.add(new PharmacyMedicamentResponseDTO(pharmacyId, matchedMedicaments));
+            responses.add(new PharmacyMedicamentResponseDTO(pharmacyId, matchedMedicaments,requestDTO.medicamentNames()));
         }
 
         return responses;

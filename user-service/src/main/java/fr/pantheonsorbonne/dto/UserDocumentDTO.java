@@ -6,9 +6,12 @@ public class UserDocumentDTO {
     private Long userId;
     private List<String> medications;
 
-    public UserDocumentDTO(Long userId, List<String> medications) {
+    private String address;
+
+    public UserDocumentDTO(Long userId, List<String> medications, String address) {
         this.userId = userId;
         this.medications = medications;
+        this.address = address;
     }
 
     public Long getUserId() {
@@ -25,5 +28,12 @@ public class UserDocumentDTO {
 
     public void setMedications(List<String> medications) {
         this.medications = medications;
+    }
+
+    public String getAddress(){
+       return this.address;
+    }
+    public void setAddress(String address){
+         this.address = address;
     }
 }

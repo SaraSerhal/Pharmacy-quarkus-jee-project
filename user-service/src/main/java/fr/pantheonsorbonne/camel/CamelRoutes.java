@@ -12,7 +12,7 @@ public class CamelRoutes extends RouteBuilder {
               //  .to("sjms2:M1.InvoiceService");
 
         from("direct:sendDocumentsToPharmacy")
-                .log("Sending user ID and medications to pharmacy service: ${body}")
+                .log("Sending user ID, medications, and address to pharmacy service: ${body}")
                 .marshal().json()
                 .to("sjms2:M1.PharmacyService");
     }

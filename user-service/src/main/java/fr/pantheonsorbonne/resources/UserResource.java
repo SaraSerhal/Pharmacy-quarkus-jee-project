@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.resources;
 
 import fr.pantheonsorbonne.dto.UserDTO;
 import fr.pantheonsorbonne.exception.InvalidUserException;
+import fr.pantheonsorbonne.exception.MissingAddressException;
 import fr.pantheonsorbonne.exception.UserAlreadyExistWithTheSameEmail;
 import fr.pantheonsorbonne.exception.EmptyDocumentListException;
 import fr.pantheonsorbonne.service.UserService;
@@ -37,7 +38,7 @@ public class UserResource {
         try {
             Long userId = userService.checkAndSaveUSer(userDTO);
             return Response.created(URI.create("/user/" + userId)).build();
-        } catch (InvalidUserException e) {
+        } catch (InvalidUserException | MissingAddressException e) {
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
         } catch (UserAlreadyExistWithTheSameEmail e) {
             throw new WebApplicationException(Response.status(Response.Status.CONFLICT).build());
@@ -54,7 +55,7 @@ public class UserResource {
             }
             userService.uploadDocuments(userId, medications);
             return Response.ok().entity("Medications successfully sent to the pharmacy service").build();
-        } catch (EmptyDocumentListException e) {
+        } catch (EmptyDocumentListException | InvalidUserException | MissingAddressException e) {
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
         }
     }
