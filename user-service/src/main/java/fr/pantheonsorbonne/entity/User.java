@@ -12,6 +12,7 @@ public class User {
 
     private String name;
     private String email;
+    private String address;
 
     public void setId(Long id) {
         this.id = id;
@@ -35,5 +36,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
