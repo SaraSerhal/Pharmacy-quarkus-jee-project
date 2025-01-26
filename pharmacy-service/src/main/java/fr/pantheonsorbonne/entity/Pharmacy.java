@@ -3,15 +3,16 @@ package fr.pantheonsorbonne.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+
 @Entity
 public class Pharmacy {
 
     @Id
     private String id;
     private String location;
-    private String openingHours;
+    private String openingTime;
+    private String closingTime;
 
-    // Getters et setters
     public String getId() {
         return id;
     }
@@ -28,11 +29,19 @@ public class Pharmacy {
         this.location = location;
     }
 
-    public String getOpeningHours() {
-        return openingHours;
+    public String getOpeningTime() {
+        return openingTime;
     }
 
-    public void setOpeningHours(String openingHours) {
-        this.openingHours = openingHours;
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public String getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
     }
 }

@@ -23,12 +23,10 @@ public class PharmacyStockService {
 
         for (String pharmacyId : requestDTO.pharmacyIds()) {
 
-            List<Medicament> availableMedicaments = medicamentDAO.findByPharmacy(pharmacyId);
+            List<Medicament> availableMedicaments = medicamentDAO.findAvailableMedicaments(pharmacyId, requestDTO.medicamentNames());
 
-            List<String> matchedMedicaments = requestDTO.medicamentNames().stream()
-                    .filter(name -> availableMedicaments.stream()
-                            .anyMatch(m -> m.getName().equalsIgnoreCase(name) &&
-                                    medicamentDAO.getMedicamentQuantity(pharmacyId, m.getId()) > 0))
+            List<String> matchedMedicaments = availableMedicaments.stream()
+                    .map(Medicament::getName)
                     .collect(Collectors.toList());
 
             responses.add(new PharmacyMedicamentResponseDTO(pharmacyId, matchedMedicaments,requestDTO.medicamentNames()));

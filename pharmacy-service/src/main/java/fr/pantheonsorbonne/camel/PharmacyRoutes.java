@@ -6,7 +6,6 @@ import fr.pantheonsorbonne.dto.PharmacyResponseDTO;
 import fr.pantheonsorbonne.service.PharmacyService;
 import jakarta.inject.Inject;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.model.dataformat.JsonLibrary;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
@@ -18,11 +17,11 @@ public class PharmacyRoutes extends RouteBuilder {
     PharmacyService pharmacyService;
 
     @Override
-    public void configure() throws Exception {
+    public void configure()  {
 
         from("sjms2:M1.PharmacyService")
                 .log("Received PharmacyRequestDTO: ${body}")
-                .unmarshal().json(JsonLibrary.Jackson, PharmacyRequestDTO.class)
+                .unmarshal().json(PharmacyRequestDTO.class)
                 .process(exchange -> {
                     PharmacyRequestDTO requestDTO = exchange.getIn().getBody(PharmacyRequestDTO.class);
                     exchange.getIn().setHeader("userId", requestDTO.userId());
@@ -31,18 +30,15 @@ public class PharmacyRoutes extends RouteBuilder {
                     PharmacyStockRequestDTO stockRequestDTO = pharmacyService.prepareStockRequest(requestDTO);
                     exchange.getIn().setBody(stockRequestDTO);
                 })
-                .marshal().json(JsonLibrary.Jackson)
+                .marshal().json()
                 .log("Sending PharmacyStockRequestDTO to StockService: ${body}")
                 .to("sjms2:M1.pharmacyStockRequestQueue");
 
         from("sjms2:M1.stockResponseQueue")
                 .log("Received response from StockService: ${body}")
-                .unmarshal().json(JsonLibrary.Jackson, PharmacyResponseDTO[].class)
-                .bean(
-                        pharmacyService,
-                        "processStockResponse(${body},${header.userId}, ${header.userAddress})"
-                )
-                .marshal().json(JsonLibrary.Jackson)
+                .unmarshal().json(PharmacyResponseDTO[].class)
+                .bean(pharmacyService, "processStockResponse(${body},${header.userId}, ${header.userAddress})")
+                .marshal().json()
                 .log("Enriched response ready to be sent: ${body}")
                 .to("sjms2:M1.itineraryRequestQueue");
     }

@@ -26,7 +26,8 @@ public class UserDAO {
         return em.find(User.class, id);
     }
 
-    public User getByEmail(String email) {
-        return em.find(User.class, email);
+    public void updateUser(User user) {
+        em.merge(user);
     }
+
 }

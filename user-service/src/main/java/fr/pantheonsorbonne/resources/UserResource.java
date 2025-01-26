@@ -59,4 +59,18 @@ public class UserResource {
             throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
         }
     }
+
+    @PUT
+    @Path("{id}/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateUser(@PathParam("id") Long userId, UserDTO updatedUserDTO) {
+        try {
+            userService.updateUser(userId, updatedUserDTO);
+            return Response.ok("User information updated successfully").build();
+        } catch (InvalidUserException | MissingAddressException e) {
+            throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
+        }
+    }
+
+
 }

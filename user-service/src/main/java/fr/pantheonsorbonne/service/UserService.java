@@ -52,18 +52,31 @@ public class UserService {
         user.setAddress(userDTO.address());
         userDAO.saveUser(user);
 
-        //documentGateway.handleNewUser(userDTO);
         return user.getId();
     }
-
     @Transactional
-    public boolean loginUser(UserDTO userDTO) throws InvalidUserException {
-        User user = userDAO.getByEmail(userDTO.email());
+    public void updateUser(Long userId, UserDTO updatedUserDTO) throws InvalidUserException, MissingAddressException {
+        User user = userDAO.getById(userId);
         if (user == null) {
-            return false;
+            throw new InvalidUserException("User not found");
         }
-        return true;
+
+        if (!updatedUserDTO.email().contains("@")) {
+            throw new InvalidUserException("Email is malformed");
+        }
+
+        if (updatedUserDTO.address() == null || updatedUserDTO.address().isBlank()) {
+            throw new MissingAddressException("Address is required and cannot be null or empty.");
+        }
+
+        user.setName(updatedUserDTO.name());
+        user.setEmail(updatedUserDTO.email());
+        user.setAddress(updatedUserDTO.address());
+
+        userDAO.updateUser(user);
     }
+
+
 
     @Transactional
     public void uploadDocuments(Long userId, List<String> medications) throws EmptyDocumentListException, InvalidUserException, MissingAddressException {

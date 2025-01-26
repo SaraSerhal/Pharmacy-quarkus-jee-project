@@ -18,33 +18,27 @@ public class PharmacyService{
     @Inject
     PharmacyDAO pharmacyDAO;
 
-    /**
-     * Prépare la requête pour le StockService.
-     */
     @Transactional
     public PharmacyStockRequestDTO prepareStockRequest(PharmacyRequestDTO requestDTO) {
-        // Récupérer les IDs des pharmacies
         List<String> pharmacyIds = pharmacyDAO.findAllPharmacyIds();
 
         return new PharmacyStockRequestDTO(pharmacyIds, requestDTO.medications());
     }
 
-    /**
-     * Filtre et enrichit la réponse du StockService.
-     */
     @Transactional
 
     public List<PharmacyResponseDTO> processStockResponse(List<PharmacyResponseDTO> stockResponses,
                                                           String userId, String userAddress) {
         return stockResponses.stream()
-                .filter(response -> !response.availableMedicaments().isEmpty()) // Filtrer les pharmacies sans médicaments
+                .filter(response -> !response.availableMedicaments().isEmpty())
                 .map(response -> {
                     Pharmacy pharmacy = pharmacyDAO.findPharmacyById(response.pharmacyId());
                     return new PharmacyResponseDTO(
                             response.pharmacyId(),
                             response.availableMedicaments(),
                             pharmacy.getLocation(),
-                            pharmacy.getOpeningHours(),
+                            pharmacy.getOpeningTime(),
+                            pharmacy.getClosingTime(),
                             response.requestedMedicaments(),
                             userId,
                             userAddress
